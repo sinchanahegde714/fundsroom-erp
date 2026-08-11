@@ -1,0 +1,246 @@
+.stock-movement-page {
+  min-height: 100vh;
+  background: #f4f6f8;
+  padding: 30px 32px;
+  box-sizing: border-box;
+}
+
+.stock-movement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.stock-movement-header h1 {
+  margin: 12px 0 5px;
+  color: #111827;
+  font-size: 26px;
+}
+
+.stock-movement-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.back-button {
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  color: #111827;
+}
+
+.add-movement-button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 16px;
+  background: #1f2937;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-movement-button:hover {
+  background: #111827;
+}
+
+.stock-movement-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.stock-movement-table-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+th {
+  background: #f9fafb;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+td {
+  color: #374151;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.movement-badge {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.movement-in {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.movement-out {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.stock-movement-loading,
+.stock-movement-empty {
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.stock-movement-form-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.form-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.stock-movement-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.stock-movement-form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stock-movement-form-group input,
+.stock-movement-form-group select,
+.stock-movement-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.stock-movement-form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.stock-movement-form-group input:focus,
+.stock-movement-form-group select:focus,
+.stock-movement-form-group textarea:focus {
+  border-color: #374151;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.cancel-button,
+.save-movement-button {
+  padding: 10px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-button {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+}
+
+.save-movement-button {
+  border: none;
+  background: #1f2937;
+  color: white;
+}
+
+.save-movement-button:hover {
+  background: #111827;
+}
+
+@media (max-width: 700px) {
+  .stock-movement-page {
+    padding: 20px;
+  }
+
+  .stock-movement-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stock-movement-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+}
