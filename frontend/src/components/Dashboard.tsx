@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Dashboard.css';
 import Customer from './Customer';
 import Product from './Product';
 import StockMovement from './StockMovement';
+import SalesChallan from './SalesChallan';
+
+
 
 
 
@@ -17,8 +20,120 @@ interface DashboardProps {
 
 
 
+
+
+interface DashboardStats {
+  customers: number;
+  products: number;
+  stock: number;
+  challans: number;
+}
+
+
+
+
+
 function Dashboard({ user, onLogout }: DashboardProps) {
   const [currentPage, setCurrentPage] = useState('dashboard');
+
+  const [stats, setStats] = useState<DashboardStats>({
+    customers: 0,
+    products: 0,
+    stock: 0,
+    challans: 0,
+  });
+
+  const [statsLoading, setStatsLoading] = useState(true);
+
+
+
+
+
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      try {
+        setStatsLoading(true);
+
+        const token = localStorage.getItem('accessToken');
+
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const [
+          customersResponse,
+          productsResponse,
+          challansResponse,
+        ] = await Promise.all([
+          fetch('http://localhost:3000/customers', {
+            headers,
+          }),
+          fetch('http://localhost:3000/products', {
+            headers,
+          }),
+          fetch('http://localhost:3000/sales-challans', {
+            headers,
+          }),
+        ]);
+
+        if (
+          !customersResponse.ok ||
+          !productsResponse.ok ||
+          !challansResponse.ok
+        ) {
+          throw new Error('Failed to fetch dashboard statistics');
+        }
+
+        const customersData = await customersResponse.json();
+        const productsData = await productsResponse.json();
+        const challansData = await challansResponse.json();
+
+        const customers = customersData.data || customersData;
+        const products = productsData.data || productsData;
+        const challans = challansData.data || challansData;
+
+        const totalStock = Array.isArray(products)
+          ? products.reduce(
+              (
+                total: number,
+                product: {
+                  currentStock: number;
+                },
+              ) =>
+                total + Number(product.currentStock || 0),
+              0,
+            )
+          : 0;
+
+        setStats({
+          customers: Array.isArray(customers)
+            ? customersData.total ?? customers.length
+            : 0,
+
+          products: Array.isArray(products)
+            ? productsData.total ?? products.length
+            : 0,
+
+          stock: totalStock,
+
+          challans: Array.isArray(challans)
+            ? challans.length
+            : 0,
+        });
+      } catch (error) {
+        console.error(
+          'Failed to load dashboard statistics:',
+          error,
+        );
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    fetchDashboardStats();
+  }, []);
+
+
 
 
 
@@ -32,6 +147,8 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
   if (currentPage === 'products') {
     return (
       <Product
@@ -39,6 +156,8 @@ function Dashboard({ user, onLogout }: DashboardProps) {
       />
     );
   }
+
+
 
 
 
@@ -52,8 +171,24 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
+  if (currentPage === 'sales-challans') {
+    return (
+      <SalesChallan
+        onBack={() => setCurrentPage('dashboard')}
+      />
+    );
+  }
+
+
+
+
+
   return (
     <div className="dashboard">
+
+
 
 
 
@@ -61,8 +196,12 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
         <div className="sidebar-logo">
           <div className="sidebar-logo-box">F</div>
+
+
 
 
 
@@ -74,7 +213,11 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
         <nav className="sidebar-nav">
+
+
 
 
 
@@ -87,40 +230,66 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
-          <button
-            className="nav-item"
-            onClick={() => setCurrentPage('customers')}
-          >
-            Customers
-          </button>
+
+
+          {(user.role === 'Admin' || user.role === 'Sales') && (
+            <button
+              className="nav-item"
+              onClick={() => setCurrentPage('customers')}
+            >
+              Customers
+            </button>
+          )}
 
 
 
-          <button
-            className="nav-item"
-            onClick={() => setCurrentPage('products')}
-          >
-            Products
-          </button>
 
 
 
-          <button
-            className="nav-item"
-            onClick={() => setCurrentPage('stock-movements')}
-          >
-            Stock Movements
-          </button>
+          {(user.role === 'Admin' || user.role === 'Warehouse') && (
+            <button
+              className="nav-item"
+              onClick={() => setCurrentPage('products')}
+            >
+              Products
+            </button>
+          )}
 
 
 
-          <button className="nav-item">
-            Sales Challans
-          </button>
+
+
+
+          {(user.role === 'Admin' || user.role === 'Warehouse') && (
+            <button
+              className="nav-item"
+              onClick={() => setCurrentPage('stock-movements')}
+            >
+              Stock Movements
+            </button>
+          )}
+
+
+
+
+
+
+          {(user.role === 'Admin' || user.role === 'Sales') && (
+            <button
+              className="nav-item"
+              onClick={() => setCurrentPage('sales-challans')}
+            >
+              Sales Challans
+            </button>
+          )}
+
+
 
 
 
         </nav>
+
+
 
 
 
@@ -133,7 +302,11 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
       </aside>
+
+
 
 
 
@@ -142,7 +315,11 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
         <header className="dashboard-header">
+
+
 
 
 
@@ -153,13 +330,19 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
           <div className="user-info">
+
+
 
 
 
             <div className="user-avatar">
               {user.name.charAt(0).toUpperCase()}
             </div>
+
+
 
 
 
@@ -170,7 +353,11 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
           </div>
+
+
 
 
 
@@ -179,7 +366,11 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
         <section className="dashboard-content">
+
+
 
 
 
@@ -187,8 +378,12 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
             <div>
               <h2>Welcome, {user.name}!</h2>
+
+
 
 
 
@@ -200,12 +395,18 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
           </div>
 
 
 
 
+
+
           <div className="stats-grid">
+
+
 
 
 
@@ -216,12 +417,20 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
-              <strong>—</strong>
+
+
+              <strong>
+                {statsLoading ? '...' : stats.customers}
+              </strong>
+
+
 
 
 
               <p>Total customers</p>
             </div>
+
+
 
 
 
@@ -233,12 +442,20 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
-              <strong>—</strong>
+
+
+              <strong>
+                {statsLoading ? '...' : stats.products}
+              </strong>
+
+
 
 
 
               <p>Total products</p>
             </div>
+
+
 
 
 
@@ -250,12 +467,20 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
-              <strong>—</strong>
+
+
+              <strong>
+                {statsLoading ? '...' : stats.stock}
+              </strong>
+
+
 
 
 
               <p>Current inventory</p>
             </div>
+
+
 
 
 
@@ -267,7 +492,13 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
-              <strong>—</strong>
+
+
+              <strong>
+                {statsLoading ? '...' : stats.challans}
+              </strong>
+
+
 
 
 
@@ -276,7 +507,11 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
           </div>
+
+
 
 
 
@@ -284,13 +519,19 @@ function Dashboard({ user, onLogout }: DashboardProps) {
 
 
 
+
+
       </main>
+
+
 
 
 
     </div>
   );
 }
+
+
 
 
 

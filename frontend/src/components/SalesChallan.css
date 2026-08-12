@@ -1,0 +1,362 @@
+.sales-challan-page {
+  min-height: 100vh;
+  background: #f4f6f8;
+  padding: 30px 32px;
+  box-sizing: border-box;
+}
+
+.sales-challan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.sales-challan-header h1 {
+  margin: 12px 0 5px;
+  color: #111827;
+  font-size: 26px;
+}
+
+.sales-challan-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.back-button {
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  color: #111827;
+}
+
+.add-challan-button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 16px;
+  background: #1f2937;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-challan-button:hover {
+  background: #111827;
+}
+
+.sales-challan-error {
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.sales-challan-table-card,
+.sales-challan-details-card,
+.sales-challan-form-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sales-challan-details-card,
+.sales-challan-form-card {
+  padding: 24px;
+}
+
+.form-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+th {
+  background: #f9fafb;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+td {
+  color: #374151;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.challan-status-badge {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.challan-status-badge.draft {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.challan-status-badge.confirmed {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.challan-status-badge.cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.view-challan-button {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.view-challan-button:hover {
+  background: #f3f4f6;
+}
+
+.sales-challan-loading,
+.sales-challan-empty {
+  padding: 50px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.challan-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.challan-details-grid strong {
+  color: #374151;
+  font-size: 13px;
+}
+
+.challan-details-grid p {
+  margin: 6px 0 0;
+  color: #111827;
+  font-size: 14px;
+}
+
+.challan-items-title {
+  color: #111827;
+  font-size: 17px;
+  margin: 0 0 14px;
+}
+
+.sales-challan-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.sales-challan-form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sales-challan-form-group input,
+.sales-challan-form-group select,
+.sales-challan-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.sales-challan-form-group input:focus,
+.sales-challan-form-group select:focus,
+.sales-challan-form-group textarea:focus {
+  border-color: #374151;
+}
+
+.challan-products-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.challan-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.challan-products-header h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 17px;
+}
+
+.add-item-button {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 7px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.add-item-button:hover {
+  background: #f3f4f6;
+}
+
+.challan-product-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.product-stock-info {
+  display: block;
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.remove-item-button {
+  border: 1px solid #fecaca;
+  background: white;
+  color: #b91c1c;
+  border-radius: 7px;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+
+.remove-item-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.challan-total {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+.challan-total strong {
+  font-size: 18px;
+  color: #111827;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.cancel-button,
+.save-challan-button {
+  padding: 10px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-button {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+}
+
+.save-challan-button {
+  border: none;
+  background: #1f2937;
+  color: white;
+}
+
+.save-challan-button:hover {
+  background: #111827;
+}
+
+@media (max-width: 700px) {
+  .sales-challan-page {
+    padding: 20px;
+  }
+
+  .sales-challan-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sales-challan-form-grid,
+  .challan-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .challan-product-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -5,9 +5,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+
 import { Product } from '../entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+
 
 @Injectable()
 export class ProductService {
@@ -16,11 +18,14 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
+
   async create(productData: CreateProductDto) {
     const product = this.productRepository.create(productData);
 
+
     return this.productRepository.save(product);
   }
+
 
   async findAll() {
     return this.productRepository.find({
@@ -30,6 +35,7 @@ export class ProductService {
     });
   }
 
+
   async findOne(id: number) {
     const product = await this.productRepository.findOne({
       where: {
@@ -37,12 +43,15 @@ export class ProductService {
       },
     });
 
+
     if (!product) {
       throw new NotFoundException('Product not found');
     }
 
+
     return product;
   }
+
 
   async update(id: number, productData: UpdateProductDto) {
     const product = await this.productRepository.findOne({
@@ -51,16 +60,41 @@ export class ProductService {
       },
     });
 
+
     if (!product) {
       throw new NotFoundException('Product not found');
     }
 
+
     await this.productRepository.update(id, productData);
+
 
     return this.productRepository.findOne({
       where: {
         id,
       },
     });
+  }
+
+
+  async remove(id: number) {
+    const product = await this.productRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+
+    await this.productRepository.delete(id);
+
+
+    return {
+      message: 'Product deleted successfully',
+    };
   }
 }
