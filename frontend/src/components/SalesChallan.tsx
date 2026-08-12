@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import './SalesChallan.css';
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 interface CustomerData {
   id: number;
   name: string;
@@ -96,7 +100,7 @@ function SalesChallan({ onBack }: SalesChallanProps) {
       setError('');
 
       const response = await fetch(
-        'http://localhost:3000/sales-challans',
+        `${API_URL}/sales-challans`,
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -127,7 +131,7 @@ function SalesChallan({ onBack }: SalesChallanProps) {
   const fetchCustomers = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3000/customers',
+        `${API_URL}/customers`,
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -156,7 +160,7 @@ function SalesChallan({ onBack }: SalesChallanProps) {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3000/products',
+        `${API_URL}/products`,
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -281,7 +285,7 @@ function SalesChallan({ onBack }: SalesChallanProps) {
       }
 
       const response = await fetch(
-        'http://localhost:3000/sales-challans',
+        `${API_URL}/sales-challans`,
         {
           method: 'POST',
           headers: {

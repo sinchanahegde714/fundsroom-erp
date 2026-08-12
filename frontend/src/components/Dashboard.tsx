@@ -6,7 +6,7 @@ import StockMovement from './StockMovement';
 import SalesChallan from './SalesChallan';
 
 
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 interface DashboardProps {
@@ -19,18 +19,12 @@ interface DashboardProps {
 }
 
 
-
-
-
 interface DashboardStats {
   customers: number;
   products: number;
   stock: number;
   challans: number;
 }
-
-
-
 
 
 function Dashboard({ user, onLogout }: DashboardProps) {
@@ -44,9 +38,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
   });
 
   const [statsLoading, setStatsLoading] = useState(true);
-
-
-
 
 
   useEffect(() => {
@@ -65,13 +56,13 @@ function Dashboard({ user, onLogout }: DashboardProps) {
           productsResponse,
           challansResponse,
         ] = await Promise.all([
-          fetch('http://localhost:3000/customers', {
+          fetch(`${API_URL}/customers`, {
             headers,
           }),
-          fetch('http://localhost:3000/products', {
+          fetch(`${API_URL}/products`, {
             headers,
           }),
-          fetch('http://localhost:3000/sales-challans', {
+          fetch(`${API_URL}/sales-challans`, {
             headers,
           }),
         ]);
@@ -134,9 +125,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
   }, []);
 
 
-
-
-
   if (currentPage === 'customers') {
     return (
       <Customer
@@ -144,9 +132,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
       />
     );
   }
-
-
-
 
 
   if (currentPage === 'products') {
@@ -158,9 +143,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
   }
 
 
-
-
-
   if (currentPage === 'stock-movements') {
     return (
       <StockMovement
@@ -168,9 +150,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
       />
     );
   }
-
-
-
 
 
   if (currentPage === 'sales-challans') {
@@ -182,27 +161,15 @@ function Dashboard({ user, onLogout }: DashboardProps) {
   }
 
 
-
-
-
   return (
     <div className="dashboard">
-
-
-
 
 
       <aside className="sidebar">
 
 
-
-
-
         <div className="sidebar-logo">
           <div className="sidebar-logo-box">F</div>
-
-
-
 
 
           <div>
@@ -212,13 +179,7 @@ function Dashboard({ user, onLogout }: DashboardProps) {
         </div>
 
 
-
-
-
         <nav className="sidebar-nav">
-
-
-
 
 
           <button
@@ -227,9 +188,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
           >
             Dashboard
           </button>
-
-
-
 
 
           {(user.role === 'Admin' || user.role === 'Sales') && (
@@ -242,10 +200,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
           )}
 
 
-
-
-
-
           {(user.role === 'Admin' || user.role === 'Warehouse') && (
             <button
               className="nav-item"
@@ -254,10 +208,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
               Products
             </button>
           )}
-
-
-
-
 
 
           {(user.role === 'Admin' || user.role === 'Warehouse') && (
@@ -270,10 +220,6 @@ function Dashboard({ user, onLogout }: DashboardProps) {
           )}
 
 
-
-
-
-
           {(user.role === 'Admin' || user.role === 'Sales') && (
             <button
               className="nav-item"
@@ -284,13 +230,7 @@ function Dashboard({ user, onLogout }: DashboardProps) {
           )}
 
 
-
-
-
         </nav>
-
-
-
 
 
         <button
@@ -301,26 +241,13 @@ function Dashboard({ user, onLogout }: DashboardProps) {
         </button>
 
 
-
-
-
       </aside>
-
-
-
-
 
 
       <main className="dashboard-main">
 
 
-
-
-
         <header className="dashboard-header">
-
-
-
 
 
           <div>
@@ -329,21 +256,12 @@ function Dashboard({ user, onLogout }: DashboardProps) {
           </div>
 
 
-
-
-
           <div className="user-info">
-
-
-
 
 
             <div className="user-avatar">
               {user.name.charAt(0).toUpperCase()}
             </div>
-
-
-
 
 
             <div>
@@ -352,39 +270,20 @@ function Dashboard({ user, onLogout }: DashboardProps) {
             </div>
 
 
-
-
-
           </div>
-
-
-
 
 
         </header>
 
 
-
-
-
-
         <section className="dashboard-content">
-
-
-
 
 
           <div className="welcome-card">
 
 
-
-
-
             <div>
               <h2>Welcome, {user.name}!</h2>
-
-
-
 
 
               <p>
@@ -394,20 +293,10 @@ function Dashboard({ user, onLogout }: DashboardProps) {
             </div>
 
 
-
-
-
           </div>
 
 
-
-
-
-
           <div className="stats-grid">
-
-
-
 
 
             <div className="stat-card">
@@ -416,23 +305,13 @@ function Dashboard({ user, onLogout }: DashboardProps) {
               </span>
 
 
-
-
-
               <strong>
                 {statsLoading ? '...' : stats.customers}
               </strong>
 
 
-
-
-
               <p>Total customers</p>
             </div>
-
-
-
-
 
 
             <div className="stat-card">
@@ -441,23 +320,13 @@ function Dashboard({ user, onLogout }: DashboardProps) {
               </span>
 
 
-
-
-
               <strong>
                 {statsLoading ? '...' : stats.products}
               </strong>
 
 
-
-
-
               <p>Total products</p>
             </div>
-
-
-
-
 
 
             <div className="stat-card">
@@ -466,23 +335,13 @@ function Dashboard({ user, onLogout }: DashboardProps) {
               </span>
 
 
-
-
-
               <strong>
                 {statsLoading ? '...' : stats.stock}
               </strong>
 
 
-
-
-
               <p>Current inventory</p>
             </div>
-
-
-
-
 
 
             <div className="stat-card">
@@ -491,48 +350,27 @@ function Dashboard({ user, onLogout }: DashboardProps) {
               </span>
 
 
-
-
-
               <strong>
                 {statsLoading ? '...' : stats.challans}
               </strong>
-
-
-
 
 
               <p>Sales challans</p>
             </div>
 
 
-
-
-
           </div>
-
-
-
 
 
         </section>
 
 
-
-
-
       </main>
-
-
-
 
 
     </div>
   );
 }
-
-
-
 
 
 export default Dashboard;

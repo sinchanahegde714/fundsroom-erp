@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './Customer.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 interface CustomerData {
   id: number;
   name: string;
@@ -58,7 +60,7 @@ function Customer({ onBack }: CustomerProps) {
       setLoading(true);
       setError('');
 
-      const response = await fetch('http://localhost:3000/customers', {
+      const response = await fetch(`${API_URL}/customers`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -145,8 +147,8 @@ function Customer({ onBack }: CustomerProps) {
       setError('');
 
       const url = editingCustomer
-        ? `http://localhost:3000/customers/${editingCustomer.id}`
-        : 'http://localhost:3000/customers';
+        ? `${API_URL}/customers/${editingCustomer.id}`
+        : `${API_URL}/customers`;
 
       const method = editingCustomer ? 'PATCH' : 'POST';
 
@@ -192,7 +194,7 @@ function Customer({ onBack }: CustomerProps) {
       setError('');
 
       const response = await fetch(
-        `http://localhost:3000/customers/${selectedCustomer.id}`,
+        `${API_URL}/customers/${selectedCustomer.id}`,
         {
           method: 'PATCH',
           headers: {

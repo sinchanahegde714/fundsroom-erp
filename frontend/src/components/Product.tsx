@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import './Product.css';
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 interface ProductData {
   id: number;
   name: string;
@@ -12,9 +16,11 @@ interface ProductData {
   location: string;
 }
 
+
 interface ProductProps {
   onBack: () => void;
 }
+
 
 function Product({ onBack }: ProductProps) {
   const [products, setProducts] = useState<ProductData[]>([]);
@@ -23,8 +29,10 @@ function Product({ onBack }: ProductProps) {
   const [editingProduct, setEditingProduct] =
     useState<ProductData | null>(null);
 
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
 
   const [formData, setFormData] = useState({
     name: '',
@@ -36,26 +44,32 @@ function Product({ onBack }: ProductProps) {
     location: '',
   });
 
+
   const getToken = () => {
     return localStorage.getItem('accessToken');
   };
+
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError('');
 
-      const response = await fetch('http://localhost:3000/products', {
+
+      const response = await fetch(`${API_URL}/products`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
       });
 
+
       const data = await response.json();
+
 
       if (!response.ok) {
         throw new Error(data.message || 'Failed to fetch products');
       }
+
 
       setProducts(data.data || data);
     } catch (error) {
@@ -69,20 +83,24 @@ function Product({ onBack }: ProductProps) {
     }
   };
 
+
   useEffect(() => {
     fetchProducts();
   }, []);
+
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, value } = e.target;
 
+
     setFormData((previous) => ({
       ...previous,
       [name]: value,
     }));
   };
+
 
   const resetForm = () => {
     setFormData({
@@ -95,12 +113,15 @@ function Product({ onBack }: ProductProps) {
       location: '',
     });
 
+
     setEditingProduct(null);
     setShowForm(false);
   };
 
+
   const handleEdit = (product: ProductData) => {
     setEditingProduct(product);
+
 
     setFormData({
       name: product.name,
@@ -114,20 +135,26 @@ function Product({ onBack }: ProductProps) {
       location: product.location,
     });
 
+
     setShowForm(true);
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
     try {
       setError('');
 
+
       const url = editingProduct
-        ? `http://localhost:3000/products/${editingProduct.id}`
-        : 'http://localhost:3000/products';
+        ? `${API_URL}/products/${editingProduct.id}`
+        : `${API_URL}/products`;
+
 
       const method = editingProduct ? 'PATCH' : 'POST';
+
 
       const response = await fetch(url, {
         method,
@@ -148,11 +175,14 @@ function Product({ onBack }: ProductProps) {
         }),
       });
 
+
       const data = await response.json();
+
 
       if (!response.ok) {
         throw new Error(data.message || 'Failed to save product');
       }
+
 
       resetForm();
       await fetchProducts();
@@ -165,8 +195,10 @@ function Product({ onBack }: ProductProps) {
     }
   };
 
+
   const filteredProducts = products.filter((product) => {
     const searchValue = search.toLowerCase();
+
 
     return (
       product.name.toLowerCase().includes(searchValue) ||
@@ -176,8 +208,10 @@ function Product({ onBack }: ProductProps) {
     );
   });
 
+
   return (
     <div className="product-page">
+
 
       <div className="product-header">
 
@@ -189,9 +223,11 @@ function Product({ onBack }: ProductProps) {
             ← Dashboard
           </button>
 
+
           <h1>Products</h1>
           <p>Manage products and inventory information</p>
         </div>
+
 
         <button
           className="add-product-button"
@@ -203,7 +239,9 @@ function Product({ onBack }: ProductProps) {
           + Add Product
         </button>
 
+
       </div>
+
 
       {error && (
         <div className="product-error">
@@ -211,8 +249,10 @@ function Product({ onBack }: ProductProps) {
         </div>
       )}
 
+
       {showForm && (
         <div className="product-form-card">
+
 
           <div className="form-card-header">
             <h2>
@@ -220,6 +260,7 @@ function Product({ onBack }: ProductProps) {
                 ? 'Edit Product'
                 : 'Add Product'}
             </h2>
+
 
             <button
               className="close-button"
@@ -229,12 +270,16 @@ function Product({ onBack }: ProductProps) {
             </button>
           </div>
 
+
           <form onSubmit={handleSubmit}>
+
 
             <div className="product-form-grid">
 
+
               <div className="product-form-group">
                 <label>Product Name</label>
+
 
                 <input
                   name="name"
@@ -244,8 +289,10 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
               <div className="product-form-group">
                 <label>SKU / Code</label>
+
 
                 <input
                   name="sku"
@@ -255,8 +302,10 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
               <div className="product-form-group">
                 <label>Category</label>
+
 
                 <input
                   name="category"
@@ -266,8 +315,10 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
               <div className="product-form-group">
                 <label>Unit Price</label>
+
 
                 <input
                   type="number"
@@ -280,8 +331,10 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
               <div className="product-form-group">
                 <label>Current Stock</label>
+
 
                 <input
                   type="number"
@@ -293,8 +346,10 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
               <div className="product-form-group">
                 <label>Minimum Stock Alert Quantity</label>
+
 
                 <input
                   type="number"
@@ -306,8 +361,10 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
               <div className="product-form-group full-width">
                 <label>Location / Warehouse</label>
+
 
                 <input
                   name="location"
@@ -317,9 +374,12 @@ function Product({ onBack }: ProductProps) {
                 />
               </div>
 
+
             </div>
 
+
             <div className="form-actions">
+
 
               <button
                 type="button"
@@ -328,6 +388,7 @@ function Product({ onBack }: ProductProps) {
               >
                 Cancel
               </button>
+
 
               <button
                 type="submit"
@@ -338,16 +399,21 @@ function Product({ onBack }: ProductProps) {
                   : 'Save Product'}
               </button>
 
+
             </div>
 
+
           </form>
+
 
         </div>
       )}
 
+
       {!showForm && (
         <>
           <div className="product-toolbar">
+
 
             <input
               className="product-search"
@@ -356,9 +422,12 @@ function Product({ onBack }: ProductProps) {
               onChange={(e) => setSearch(e.target.value)}
             />
 
+
           </div>
 
+
           <div className="product-table-card">
+
 
             {loading ? (
               <div className="product-loading">
@@ -371,7 +440,9 @@ function Product({ onBack }: ProductProps) {
             ) : (
               <div className="table-wrapper">
 
+
                 <table>
+
 
                   <thead>
                     <tr>
@@ -386,32 +457,41 @@ function Product({ onBack }: ProductProps) {
                     </tr>
                   </thead>
 
+
                   <tbody>
 
+
                     {filteredProducts.map((product) => {
+
 
                       const isLowStock =
                         product.currentStock <=
                         product.minimumStockAlertQuantity;
 
+
                       return (
                         <tr key={product.id}>
+
 
                           <td>
                             <strong>{product.name}</strong>
                           </td>
 
+
                           <td>
                             {product.sku}
                           </td>
+
 
                           <td>
                             {product.category}
                           </td>
 
+
                           <td>
                             ₹{Number(product.unitPrice).toFixed(2)}
                           </td>
+
 
                           <td>
                             <span
@@ -425,13 +505,16 @@ function Product({ onBack }: ProductProps) {
                             </span>
                           </td>
 
+
                           <td>
                             {product.minimumStockAlertQuantity}
                           </td>
 
+
                           <td>
                             {product.location}
                           </td>
+
 
                           <td>
                             <button
@@ -444,23 +527,30 @@ function Product({ onBack }: ProductProps) {
                             </button>
                           </td>
 
+
                         </tr>
                       );
                     })}
 
+
                   </tbody>
+
 
                 </table>
 
+
               </div>
             )}
+
 
           </div>
         </>
       )}
 
+
     </div>
   );
 }
+
 
 export default Product;

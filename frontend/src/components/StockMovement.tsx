@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import './StockMovement.css';
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 interface ProductData {
   id: number;
   name: string;
@@ -8,11 +12,13 @@ interface ProductData {
   currentStock: number;
 }
 
+
 interface UserData {
   id: number;
   name: string;
   email: string;
 }
+
 
 interface StockMovementData {
   id: number;
@@ -24,18 +30,23 @@ interface StockMovementData {
   createdAt: string;
 }
 
+
 interface StockMovementProps {
   onBack: () => void;
 }
+
 
 function StockMovement({ onBack }: StockMovementProps) {
   const [movements, setMovements] = useState<StockMovementData[]>([]);
   const [products, setProducts] = useState<ProductData[]>([]);
 
+
   const [showForm, setShowForm] = useState(false);
+
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
 
   const [formData, setFormData] = useState({
     productId: '',
@@ -44,12 +55,15 @@ function StockMovement({ onBack }: StockMovementProps) {
     reason: '',
   });
 
+
   const getToken = () => {
     return localStorage.getItem('accessToken');
   };
 
+
   const getUserId = () => {
     const storedUser = localStorage.getItem('user');
+
 
     if (storedUser) {
       try {
@@ -60,16 +74,19 @@ function StockMovement({ onBack }: StockMovementProps) {
       }
     }
 
+
     return null;
   };
+
 
   const fetchMovements = async () => {
     try {
       setLoading(true);
       setError('');
 
+
       const response = await fetch(
-        'http://localhost:3000/stock-movements',
+        `${API_URL}/stock-movements`,
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -77,13 +94,16 @@ function StockMovement({ onBack }: StockMovementProps) {
         },
       );
 
+
       const data = await response.json();
+
 
       if (!response.ok) {
         throw new Error(
           data.message || 'Failed to fetch stock movements',
         );
       }
+
 
       setMovements(data);
     } catch (error) {
@@ -97,10 +117,11 @@ function StockMovement({ onBack }: StockMovementProps) {
     }
   };
 
+
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3000/products',
+        `${API_URL}/products`,
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -108,13 +129,16 @@ function StockMovement({ onBack }: StockMovementProps) {
         },
       );
 
+
       const data = await response.json();
+
 
       if (!response.ok) {
         throw new Error(
           data.message || 'Failed to fetch products',
         );
       }
+
 
       setProducts(data.data || data);
     } catch (error) {
@@ -126,10 +150,12 @@ function StockMovement({ onBack }: StockMovementProps) {
     }
   };
 
+
   useEffect(() => {
     fetchMovements();
     fetchProducts();
   }, []);
+
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -138,11 +164,13 @@ function StockMovement({ onBack }: StockMovementProps) {
   ) => {
     const { name, value } = e.target;
 
+
     setFormData((previous) => ({
       ...previous,
       [name]: value,
     }));
   };
+
 
   const resetForm = () => {
     setFormData({
@@ -152,16 +180,21 @@ function StockMovement({ onBack }: StockMovementProps) {
       reason: '',
     });
 
+
     setShowForm(false);
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
     try {
       setError('');
 
+
       const userId = getUserId();
+
 
       if (!userId) {
         throw new Error(
@@ -169,8 +202,9 @@ function StockMovement({ onBack }: StockMovementProps) {
         );
       }
 
+
       const response = await fetch(
-        'http://localhost:3000/stock-movements',
+        `${API_URL}/stock-movements`,
         {
           method: 'POST',
           headers: {
@@ -189,7 +223,9 @@ function StockMovement({ onBack }: StockMovementProps) {
         },
       );
 
+
       const data = await response.json();
+
 
       if (!response.ok) {
         throw new Error(
@@ -197,7 +233,9 @@ function StockMovement({ onBack }: StockMovementProps) {
         );
       }
 
+
       resetForm();
+
 
       await fetchMovements();
       await fetchProducts();
@@ -210,8 +248,10 @@ function StockMovement({ onBack }: StockMovementProps) {
     }
   };
 
+
   return (
     <div className="stock-movement-page">
+
 
       <div className="stock-movement-header">
 
@@ -223,12 +263,15 @@ function StockMovement({ onBack }: StockMovementProps) {
             ← Dashboard
           </button>
 
+
           <h1>Stock Movements</h1>
+
 
           <p>
             Track stock additions and deductions
           </p>
         </div>
+
 
         <button
           className="add-movement-button"
@@ -237,7 +280,9 @@ function StockMovement({ onBack }: StockMovementProps) {
           + Add Movement
         </button>
 
+
       </div>
+
 
       {error && (
         <div className="stock-movement-error">
@@ -245,14 +290,17 @@ function StockMovement({ onBack }: StockMovementProps) {
         </div>
       )}
 
+
       {showForm && (
         <div className="stock-movement-form-card">
+
 
           <div className="form-card-header">
 
             <h2>
               Add Stock Movement
             </h2>
+
 
             <button
               className="close-button"
@@ -261,14 +309,19 @@ function StockMovement({ onBack }: StockMovementProps) {
               ×
             </button>
 
+
           </div>
+
 
           <form onSubmit={handleSubmit}>
 
+
             <div className="stock-movement-form-grid">
+
 
               <div className="stock-movement-form-group">
                 <label>Product</label>
+
 
                 <select
                   name="productId"
@@ -280,6 +333,7 @@ function StockMovement({ onBack }: StockMovementProps) {
                     Select product
                   </option>
 
+
                   {products.map((product) => (
                     <option
                       key={product.id}
@@ -288,11 +342,15 @@ function StockMovement({ onBack }: StockMovementProps) {
                       {product.name} — {product.sku}
                     </option>
                   ))}
+
+
                 </select>
               </div>
 
+
               <div className="stock-movement-form-group">
                 <label>Movement Type</label>
+
 
                 <select
                   name="movementType"
@@ -304,14 +362,17 @@ function StockMovement({ onBack }: StockMovementProps) {
                     IN
                   </option>
 
+
                   <option value="OUT">
                     OUT
                   </option>
                 </select>
               </div>
 
+
               <div className="stock-movement-form-group">
                 <label>Quantity</label>
+
 
                 <input
                   type="number"
@@ -323,8 +384,10 @@ function StockMovement({ onBack }: StockMovementProps) {
                 />
               </div>
 
+
               <div className="stock-movement-form-group full-width">
                 <label>Reason</label>
+
 
                 <textarea
                   name="reason"
@@ -335,9 +398,12 @@ function StockMovement({ onBack }: StockMovementProps) {
                 />
               </div>
 
+
             </div>
 
+
             <div className="form-actions">
+
 
               <button
                 type="button"
@@ -347,6 +413,7 @@ function StockMovement({ onBack }: StockMovementProps) {
                 Cancel
               </button>
 
+
               <button
                 type="submit"
                 className="save-movement-button"
@@ -354,15 +421,20 @@ function StockMovement({ onBack }: StockMovementProps) {
                 Save Movement
               </button>
 
+
             </div>
 
+
           </form>
+
 
         </div>
       )}
 
+
       {!showForm && (
         <div className="stock-movement-table-card">
+
 
           {loading ? (
             <div className="stock-movement-loading">
@@ -375,7 +447,9 @@ function StockMovement({ onBack }: StockMovementProps) {
           ) : (
             <div className="table-wrapper">
 
+
               <table>
+
 
                 <thead>
                   <tr>
@@ -389,10 +463,13 @@ function StockMovement({ onBack }: StockMovementProps) {
                   </tr>
                 </thead>
 
+
                 <tbody>
+
 
                   {movements.map((movement) => (
                     <tr key={movement.id}>
+
 
                       <td>
                         <strong>
@@ -400,9 +477,11 @@ function StockMovement({ onBack }: StockMovementProps) {
                         </strong>
                       </td>
 
+
                       <td>
                         {movement.product.sku}
                       </td>
+
 
                       <td>
                         <span
@@ -416,17 +495,21 @@ function StockMovement({ onBack }: StockMovementProps) {
                         </span>
                       </td>
 
+
                       <td>
                         {movement.quantityChanged}
                       </td>
+
 
                       <td>
                         {movement.reason}
                       </td>
 
+
                       <td>
                         {movement.createdBy.name}
                       </td>
+
 
                       <td>
                         {new Date(
@@ -434,21 +517,28 @@ function StockMovement({ onBack }: StockMovementProps) {
                         ).toLocaleString()}
                       </td>
 
+
                     </tr>
                   ))}
 
+
                 </tbody>
 
+
               </table>
+
 
             </div>
           )}
 
+
         </div>
       )}
+
 
     </div>
   );
 }
+
 
 export default StockMovement;
