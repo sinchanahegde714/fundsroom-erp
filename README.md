@@ -55,7 +55,7 @@ A full-stack ERP and CRM Operations Portal designed to manage customers, product
 - Sales challan count
 - Role-based navigation
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
